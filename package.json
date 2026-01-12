@@ -1,0 +1,34 @@
+{
+  "name": "image-processing-service-project",
+  "version": "1.0.0",
+  "description": "This project involves creating a backend system for an image processing service similar to Cloudinary. The service will allow users to upload images, perform various transformations, and retrieve images in different formats. The system will feature user authentication, image upload, transformation operations, and efficient retrieval mechanisms.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Usman8-dev/Image-Processing-Service-Project.git"
+  },
+  "keywords": [
+    "Images"
+  ],
+  "author": "MUHAMMAD USMAN",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Usman8-dev/Image-Processing-Service-Project/issues"
+  },
+  "homepage": "https://github.com/Usman8-dev/Image-Processing-Service-Project#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "config": "^4.1.1",
+    "cookie-parser": "^1.4.7",
+    "crypto": "^1.0.1",
+    "debug": "^4.4.3",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-validator": "^7.3.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.1.3"
+  }
+}
