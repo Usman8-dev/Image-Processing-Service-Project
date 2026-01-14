@@ -33,6 +33,62 @@ const processImage = async (req, res) => {
       });
     }
 
+    // Apply rotate
+    if (rotate) {
+      image = image.rotate(parseInt(rotate));
+    }
+
+    // Apply flip
+    if (flip) {
+      if (flip === 'horizontal') {
+        image = image.flop();
+      } else if (flip === 'vertical') {
+        image = image.flip();
+      } else if (flip === 'both') {
+        image = image.flip().flop();
+      }
+    }
+
+    // Apply watermark if requested
+    if (watermark === 'text' && wm_text) {
+      const svg = `
+        <svg width="200" height="50">
+          <style>
+            .title { fill: rgba(255,255,255,0.8); font-size: 20px; font-family: Arial; }
+          </style>
+          <text x="10" y="30" class="title">${wm_text}</text>
+        </svg>
+      `;
+      const watermarkBuffer = Buffer.from(svg);
+      const watermarkImage = sharp(watermarkBuffer);
+
+      let gravity = 'southeast'; // default bottom-right
+      if (wm_position === 'top-left') gravity = 'northwest';
+      else if (wm_position === 'top-right') gravity = 'northeast';
+      else if (wm_position === 'bottom-left') gravity = 'southwest';
+      else if (wm_position === 'center') gravity = 'center';
+
+      image = image.composite([{ input: await watermarkImage.toBuffer(), gravity }]);
+    }
+
+    // Determine output format and quality
+    let outputOptions = {};
+    if (format) {
+      if (format === 'jpeg' || format === 'jpg') {
+        outputOptions = { quality: quality ? parseInt(quality) : 80 };
+        image = image.jpeg(outputOptions);
+      } else if (format === 'png') {
+        outputOptions = { quality: quality ? parseInt(quality) : 80 };
+        image = image.png(outputOptions);
+      } else if (format === 'webp') {
+        outputOptions = { quality: quality ? parseInt(quality) : 80 };
+        image = image.webp(outputOptions);
+      }
+    } else {
+      // Default to jpeg if no format specified
+      image = image.jpeg({ quality: quality ? parseInt(quality) : 80 });
+    }
+
     // Get the processed image buffer
     const buffer = await image.toBuffer();
 
